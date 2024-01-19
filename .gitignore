@@ -1,3 +1,6 @@
+# Added
+*.log
+
 # Compiled Lua sources
 luac.out
 
