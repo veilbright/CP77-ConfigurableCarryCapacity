@@ -2,15 +2,20 @@ local SettingsManager = {}
 
 local logtag = "settings_manager"
 
+local saved_settings_path = "./data/saved_settings.json"
+
 local InventoryManager = {}
 
 local active_settings = {}
 local pending_settings = {}
 
 local default_settings = {
+    carryCapacity = 200,
     noEquipWeight = true
 }
 
+local min_carry_capacity = 0
+local max_carry_capacity = 1000
 
 -- LOCAL FUNCTIONS --
 
@@ -23,7 +28,7 @@ end
 
 -- Writes active_settings to file
 local function save_settings()
-    WriteJSONFile(FilePaths.savedSettings, active_settings)
+    WriteJSONFile(saved_settings_path, active_settings)
 end
 
 -- Calls manager's apply_settings functions, sets active_settings to pending_settings, and saves the settings to a file
@@ -45,7 +50,7 @@ end
 -- Loads settings from file
 local function load_saved_settings()
     local is_valid = false
-    is_valid, pending_settings = IsSuccessProtectedLoadJSONFile(FilePaths.savedSettings)
+    is_valid, pending_settings = IsSuccessProtectedLoadJSONFile(saved_settings_path)
 
     if (not is_valid) then
         apply_default_settings()
@@ -69,7 +74,22 @@ local function create_settings_menu()
         nativeSettings.addTab(path, ModName, apply_pending_settings)
     end
 
-    -- nativeSettings.addSwitch(path, label, desc, currentValue, defaultValue, callback, optionalIndex)
+    -- carryCapacity slider int
+    nativeSettings.addRangeInt(
+        path,
+        "Carry Capacity (Requires Reload)",
+        "**REQUIRES RELOAD** Amount of weight that the player can carry before becoming overencumbered",
+        min_carry_capacity,
+        max_carry_capacity,
+        1,
+        active_settings.carryCapacity,
+        default_settings.carryCapacity,
+        function(value)
+            pending_settings.carryCapacity = value
+        end
+    )
+
+    -- noEquipWeight switch
     nativeSettings.addSwitch(
         path,
         "Equipped Items Don't Affect Carry Weight",

@@ -1,8 +1,6 @@
 local CarryCapacityOverhaul = {}
 
 ModName = "Carry Capacity Overhaul"
-FilePathsJSON = "./data/file_paths.json"
-FilePaths = {}
 
 DEBUG = true
 local logtag = "init"
@@ -27,8 +25,6 @@ end
 -- On CET Init, will load data filepaths and initialize SettingsManager and observers
 registerForEvent("onInit", function()
     LogDebug(logtag, "Start initialization")
-
-    FilePaths = ProtectedLoadJSONFile(FilePathsJSON)
 
     SettingsManager:initialize(InventoryManager)
     initialize_observers()
@@ -109,6 +105,7 @@ end
 ---@param tag string
 ---@param text any
 function LogError(tag, text)
+    spdlog.info(tostring("["..ModName.."] ERROR "..tag..": "..text))
     print(tostring("["..ModName.."] ERROR "..tag..": "..text))
 end
 
