@@ -3,19 +3,28 @@ local SettingsManager = {}
 local logtag = "settings_manager"
 
 local saved_settings_path = "./data/saved_settings.json"
+local presets_path = "./data/presets.json"
 
 local InventoryManager = {}
+
+local settings_menu = {}
 
 local active_settings = {}
 local pending_settings = {}
 
 local default_settings = {
+    preset = 1,
     carryCapacity = 200,
     noEquipWeight = true
 }
 
 local min_carry_capacity = 0
-local max_carry_capacity = 1000
+local max_carry_capacity = 500
+
+local valid_presets = false
+local preset_selected = default_settings.preset
+local preset_list = {}
+local preset_settings = {}
 
 -- LOCAL FUNCTIONS --
 
@@ -29,6 +38,17 @@ end
 -- Writes active_settings to file
 local function save_settings()
     WriteJSONFile(saved_settings_path, active_settings)
+end
+
+-- Applies settings based on preset selected
+local function apply_preset(native_settings)
+    for key, value in pairs(preset_settings[preset_selected]) do
+        if value ~= nil then                    -- typically will just skip the name which should be set to nil already
+            if settings_menu[key] ~= nil then   -- verify the option exists on the settings menu
+                native_settings.setOption(settings_menu[key], value)
+            end
+        end
+    end
 end
 
 -- Calls manager's apply_settings functions, sets active_settings to pending_settings, and saves the settings to a file
@@ -57,26 +77,95 @@ local function load_saved_settings()
         return
     end
 
+    -- verify all settings are set before applying
+    for name, value in pairs(default_settings) do
+        if pending_settings[name] == nil then
+            LogDebug(logtag, name.." not found in "..saved_settings_path)
+            pending_settings[name] = value
+        end
+    end
+
     apply_pending_settings()
 end
 
--- Configures nativeSettings menu
-local function create_settings_menu()
-    local path = '/' .. ModName
-    local nativeSettings = GetMod('nativeSettings')
+local function load_presets()
+    valid_presets, preset_settings = IsSuccessProtectedLoadJSONFile(presets_path)
 
-    if (nativeSettings == nil) then
-        LogDebug(logtag, "nativeSettings not found")
+    -- if presets are loaded, make the list for the selector
+    if valid_presets then
+        for i, preset_table in ipairs(preset_settings) do
+
+            -- if presets aren't loading correctly, they aren't valid
+            if preset_table.name == nil then
+                valid_presets = false
+                LogDebug(logtag, "Loaded presets are not valid")
+                return
+            end
+
+            preset_list[i] = preset_table.name
+            preset_table.name = nil
+        end
+    else
+        LogDebug(logtag, "Loaded presets are not valid")
+    end
+end
+
+-- Configures NativeSettings menu
+local function create_settings_menu()
+    local base_path = "/"..ModName
+    local presets_path = base_path.."/presets"
+    local settings_path = base_path.."/settings"
+    local NativeSettings = GetMod('nativeSettings')
+
+    if (NativeSettings == nil) then
+        LogDebug(logtag, "NativeSettings not found")
         return
     end
 
-    if not nativeSettings.pathExists(path) then
-        nativeSettings.addTab(path, ModName, apply_pending_settings)
+    -- adds NativeSettings tab and subcategories
+    if not NativeSettings.pathExists(base_path) then
+        NativeSettings.addTab(base_path, ModName, apply_pending_settings)
+    end
+    if not NativeSettings.pathExists(presets_path) and valid_presets then
+        NativeSettings.addSubcategory(presets_path, "Presets")
+    end
+    if not NativeSettings.pathExists(settings_path) then
+        NativeSettings.addSubcategory(settings_path, "Settings")
+    end
+
+
+    -- if presets file isn't loaded, don't load the UI for it
+    if valid_presets then
+
+        -- select preset string list
+        NativeSettings.addSelectorString(
+            presets_path,
+            "Select Preset",
+            "Choose which preset to apply",
+            preset_list,
+            active_settings.preset,
+            default_settings.preset,
+            function(value)
+                preset_selected = value
+            end
+        )
+
+        -- apply preset button
+        NativeSettings.addButton(
+            presets_path,
+            "Apply Preset",
+            "Applies the settings from the preset selected above",
+            "Apply",
+            45,
+            function()
+                apply_preset(NativeSettings)
+            end
+        )
     end
 
     -- carryCapacity slider int
-    nativeSettings.addRangeInt(
-        path,
+    settings_menu.carryCapacity = NativeSettings.addRangeInt(
+        settings_path,
         "Carry Capacity (Requires Reload)",
         "**REQUIRES RELOAD** Amount of weight that the player can carry before becoming overencumbered",
         min_carry_capacity,
@@ -90,8 +179,8 @@ local function create_settings_menu()
     )
 
     -- noEquipWeight switch
-    nativeSettings.addSwitch(
-        path,
+    settings_menu.noEquipWeight = NativeSettings.addSwitch(
+        settings_path,
         "Equipped Items Don't Affect Carry Weight",
         "Weapons or clothing that you equip will not contribute to the amount of weight you are carrying",
         active_settings.noEquipWeight,
@@ -108,6 +197,7 @@ end
 ---@param inventory_manager table
 function SettingsManager:initialize(inventory_manager)
     InventoryManager = inventory_manager
+    load_presets()
     load_saved_settings()
     create_settings_menu()
 end

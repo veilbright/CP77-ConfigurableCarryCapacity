@@ -1,0 +1,17 @@
+[
+    {
+        "name": "Default",
+        "carryCapacity": 200,
+        "noEquipWeight": true
+    },
+    {
+        "name": "Realistic",
+        "carryCapacity": 10,
+        "noEquipWeight": true
+    },
+    {
+        "name": "Vanilla",
+        "carryCapacity": 200,
+        "noEquipWeight": false
+    }
+]
