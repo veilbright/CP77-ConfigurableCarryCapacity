@@ -1,5 +1,7 @@
 # Added
 *.log
+*.sqlite3
+src/data/saved_settings.json
 
 # Compiled Lua sources
 luac.out
