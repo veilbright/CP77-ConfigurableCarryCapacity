@@ -2,7 +2,7 @@ local SettingsManager = {}
 
 local logtag = "settings_manager"
 
-local inventory_manager = {}
+local InventoryManager = {}
 
 local active_settings = {}
 local pending_settings = {}
@@ -12,30 +12,37 @@ local default_settings = {
 }
 
 
+-- LOCAL FUNCTIONS --
+
+-- Sets pending_settings to default_settings
 local function set_default_settings()
     for name, value in pairs(default_settings) do
         pending_settings[name] = value
     end
 end
 
+-- Writes active_settings to file
 local function save_settings()
     WriteJSONFile(FilePaths.savedSettings, active_settings)
 end
 
+-- Calls manager's apply_settings functions, sets active_settings to pending_settings, and saves the settings to a file
 local function apply_pending_settings()
-    inventory_manager:apply_settings(pending_settings)
+    InventoryManager:apply_settings(pending_settings)
 
     for name, value in pairs(pending_settings) do
-            active_settings[name] = value
+        active_settings[name] = value
     end
     save_settings()
 end
 
+-- Sets pending_settings to defaul_settings and applies them
 local function apply_default_settings()
     set_default_settings()
     apply_pending_settings()
 end
 
+-- Loads settings from file
 local function load_saved_settings()
     local is_valid = false
     is_valid, pending_settings = IsSuccessProtectedLoadJSONFile(FilePaths.savedSettings)
@@ -48,6 +55,7 @@ local function load_saved_settings()
     apply_pending_settings()
 end
 
+-- Configures nativeSettings menu
 local function create_settings_menu()
     local path = '/' .. ModName
     local nativeSettings = GetMod('nativeSettings')
@@ -74,9 +82,12 @@ local function create_settings_menu()
     )
 end
 
----@param inv_manager table
-function SettingsManager:initialize(inv_manager)
-    inventory_manager = inv_manager
+
+-- SETTINGSMANAGER FUNCTIONS --
+
+---@param inventory_manager table
+function SettingsManager:initialize(inventory_manager)
+    InventoryManager = inventory_manager
     load_saved_settings()
     create_settings_menu()
 end

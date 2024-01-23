@@ -2,6 +2,9 @@ local InventoryDataManagerV2Observer = {}
 
 local logtag = "inventory_data_manager_v2_observer"
 
+
+-- LOCAL FUNCTIONS --
+
 ---@param inventory_data_manager_v2 InventoryDataManagerV2
 ---@param itemID ItemID
 ---@param slot number
@@ -12,6 +15,9 @@ end
 local function observe_before_UnequipItem(inventory_data_manager_v2, equip_area, slot)
     InventoryManager:before_unequip_item(inventory_data_manager_v2, equip_area, slot)
 end
+
+
+-- OBSERVER FUNCTIONS --
 
 function InventoryDataManagerV2Observer:initialize()
     -- Call before_equip_item when weapon or clothing is equipped

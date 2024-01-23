@@ -2,6 +2,9 @@ local VendorDataManagerObserver = {}
 
 local logtag = "vendor_data_manager_observer"
 
+
+-- LOCAL FUNCTIONS --
+
 ---@param item_data gameItemData
 local function observe_before_TransferItem(class, source, target, item_data)
     InventoryManager:before_transfer_item(item_data)
@@ -11,6 +14,9 @@ end
 local function observe_before_SellItemToVendor(class, item_data)
     InventoryManager:before_sell_item(item_data)
 end
+
+
+-- OBSERVER FUNCTIONS --
 
 function VendorDataManagerObserver:initialize()
     -- Call before_transfer_item when the player/vendor transfers an item

@@ -7,13 +7,15 @@ FilePaths = {}
 DEBUG = true
 local logtag = "init"
 
+-- Managers
 local SettingsManager = require("./core/settings_manager")
 local InventoryManager = require("./core/inventory_manager")
 
+-- Observers
 local InventoryDataManagerV2Observer = require("./observers/InventoryDataManagerV2")
 local VendorDataManagerObserver = require("./observers/VendorDataManager")
 
--- onInit
+-- On CET Init, will load data filepaths and initialize SettingsManager and observers
 registerForEvent("onInit", function()
     LogDebug(logtag, "Start initialization")
 
@@ -70,6 +72,7 @@ end
 
 ---@param filepath string
 ---@param contents_table table
+-- Writes a table as JSON to a filepath
 function WriteJSONFile(filepath, contents_table)
     local is_valid_json, contents = pcall(function() return json.encode(contents_table) end)
 
@@ -102,6 +105,20 @@ function LogError(tag, text)
     print(tostring("["..ModName.."] ERROR "..tag..": "..text))
 end
 
+ ---@param element any
+ ---@param table table
+ ---@return boolean
+ -- Returns if the element is found in the table
+function ElementInTable(element, table)
+    for key, value in pairs(table) do
+        if (element == value) then
+            return true
+        end
+    end
+
+    return false
+end
+
 function DumpTable(o)
     if type(o) == 'table' then
        local s = '{ '
@@ -114,20 +131,5 @@ function DumpTable(o)
        return tostring(o)
     end
  end
-
-
- ---@param element any
- ---@param table table
- ---@return boolean
- -- Table should be set up with elements in keys and false in values
-function ElementInTable(element, table)
-    for key, value in pairs(table) do
-        if (element == value) then
-            return true
-        end
-    end
-
-    return false
-end
 
 return CarryCapacityOverhaul
