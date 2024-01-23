@@ -12,8 +12,17 @@ local SettingsManager = require("./core/settings_manager")
 local InventoryManager = require("./core/inventory_manager")
 
 -- Observers
+local EquipmentSystemPlayerDataObserver = require("./observers/EquipmentSystemPlayerData")
 local InventoryDataManagerV2Observer = require("./observers/InventoryDataManagerV2")
+local PlayerPuppetObserver = require("./observers/PlayerPuppet")
 local VendorDataManagerObserver = require("./observers/VendorDataManager")
+
+local function initialize_observers()
+    EquipmentSystemPlayerDataObserver:initialize()
+    InventoryDataManagerV2Observer:initialize()
+    PlayerPuppetObserver:initialize()
+    VendorDataManagerObserver:initialize()
+end
 
 -- On CET Init, will load data filepaths and initialize SettingsManager and observers
 registerForEvent("onInit", function()
@@ -22,9 +31,7 @@ registerForEvent("onInit", function()
     FilePaths = ProtectedLoadJSONFile(FilePathsJSON)
 
     SettingsManager:initialize(InventoryManager)
-
-    InventoryDataManagerV2Observer:initialize()
-    VendorDataManagerObserver:initialize()
+    initialize_observers()
 
     LogDebug(logtag, "End initialization")
 end)

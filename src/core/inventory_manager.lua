@@ -22,30 +22,26 @@ local function reset_weight()
 
     -- Get game systems
     local player = Game.GetPlayer()
-    local equipment_system = Game.GetScriptableSystemsContainer():Get('EquipmentSystem')
-    local equipment_system_player_data = equipment_system:GetPlayerData(player)
-    local inventory_data_manager_v2 = equipment_system_player_data:GetInventoryManager()
 
     -- TODO: probably shouldn't be -9999999
     player:UpdateInventoryWeight(-9999999)              -- resets inventory weight to 0
     player:CalculateEncumbrance()                       -- adds weight of every item in inventory
-
-    if (no_equip_weight) then
-        local equipped_weight = 0
-        
-        for i, inventory_data in pairs(inventory_data_manager_v2:GetEquippedWeapons()) do                   -- iterate through equipped weapons
-            equipped_weight = equipped_weight + gameRPGManager.GetItemWeight(inventory_data:GetGameItemData())    -- subtract their weight
-        end
-        for i, clothing_area in pairs(equipment_system.GetClothingEquipmentAreas()) do                      -- iterate through clothing equipment areas
-            equipped_weight = equipped_weight + RPGManager.GetItemWeight(inventory_data_manager_v2:GetPlayerItemData(inventory_data_manager_v2:GetEquippedItemIdInArea(clothing_area, 0)))    -- subtract their weight
-        end
-
-        player:UpdateInventoryWeight(-equipped_weight)  -- subtract weight of equipped items
-    end
 end
 
 
 -- INVENTORYMANAGER FUNCTIONS --
+
+---@param settings table
+-- Updates settings variables and resets anything needed
+function InventoryManager:apply_settings(settings)
+    if (no_equip_weight ~= settings.noEquipWeight) then     -- if no_equip_weight is changed
+        no_equip_weight = settings.noEquipWeight
+        reset_weight()                                      -- reset the inventory weight based on new value
+    end
+end
+
+
+-- OBSERVER FUNCTIONS --
 
 ---@param inventory_data_manager_v2 InventoryDataManagerV2
 ---@param itemID ItemID
@@ -112,18 +108,6 @@ function InventoryManager:before_unequip_item(inventory_data_manager_v2, equip_a
     player:UpdateInventoryWeight(unequippedItemWeight)      -- add weightChange to inventoryWeight
 end
 
----@param settings table
--- Updates settings variables and resets anything needed
-function InventoryManager:apply_settings(settings)
-    if (no_equip_weight ~= settings.noEquipWeight) then     -- if no_equip_weight is changed
-        no_equip_weight = settings.noEquipWeight
-        reset_weight()                                      -- reset the inventory weight based on new value
-    end
-end
-
-
--- OBSERVER FUNCTIONS --
-
 ---@param item_data gameItemData
 -- Adds weight before an equipped item is transferred
 function InventoryManager:before_transfer_item(item_data)
@@ -137,6 +121,39 @@ end
 function InventoryManager:before_sell_item(item_data)
     if (no_equip_weight) then
         add_weight_if_equipped(item_data)
+    end
+end
+
+function InventoryManager:adjust_calculate_encumbrance()
+    if (no_equip_weight) then
+        -- Get game systems (error checks are here because PlayerPuppet calls CalculateEncumbrance OnGameAttached, and InventoryDataManagerV2 is nil when that happens)
+        local player = Game.GetPlayer()
+
+        local equipment_system = Game.GetScriptableSystemsContainer():Get('EquipmentSystem')
+        if equipment_system == nil then
+            return
+        end
+
+        local equipment_system_player_data = equipment_system:GetPlayerData(player)
+        if equipment_system_player_data == nil then
+            return
+        end
+
+        local inventory_data_manager_v2 = equipment_system_player_data:GetInventoryManager()
+        if inventory_data_manager_v2 == nil then
+            return
+        end
+
+        local equipped_weight = 0
+        
+        for i, inventory_data in pairs(inventory_data_manager_v2:GetEquippedWeapons()) do                   -- iterate through equipped weapons
+            equipped_weight = equipped_weight + gameRPGManager.GetItemWeight(inventory_data:GetGameItemData())    -- subtract their weight
+        end
+        for i, clothing_area in pairs(equipment_system.GetClothingEquipmentAreas()) do                      -- iterate through clothing equipment areas
+            equipped_weight = equipped_weight + RPGManager.GetItemWeight(inventory_data_manager_v2:GetPlayerItemData(inventory_data_manager_v2:GetEquippedItemIdInArea(clothing_area, 0)))    -- subtract their weight
+        end
+
+        player:UpdateInventoryWeight(-equipped_weight)  -- subtract weight of equipped items
     end
 end
 

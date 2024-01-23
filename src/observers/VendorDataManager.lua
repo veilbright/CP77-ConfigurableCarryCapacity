@@ -1,7 +1,5 @@
 local VendorDataManagerObserver = {}
 
-local logtag = "vendor_data_manager_observer"
-
 
 -- LOCAL FUNCTIONS --
 
