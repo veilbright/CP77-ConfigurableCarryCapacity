@@ -3,7 +3,6 @@ InventoryManager = {}
 local logtag = "inventory_manager"
 
 local no_equip_weight = nil
-local carry_capacity = nil
 
 
 -- LOCAL FUNCTIONS --
@@ -20,7 +19,6 @@ end
 
 -- Sets inventory weight based on items in inventory
 local function reset_weight()
-
     -- Get game systems
     local player = Game.GetPlayer()
 
@@ -39,12 +37,6 @@ function InventoryManager:apply_settings(settings)
     if (no_equip_weight ~= settings.noEquipWeight) then     -- if no_equip_weight is changed
         no_equip_weight = settings.noEquipWeight
         reset_weight()                                      -- reset the inventory weight based on new value
-    end
-
-    -- carry_capacity TODO: maybe reload doesn't have to be required?
-    if (carry_capacity ~= settings.carryCapacity) then
-        carry_capacity = settings.carryCapacity
-        TweakDB:SetFlat("Character.Player_Primary_Stats_Base_inline13.value", carry_capacity)
     end
 end
 

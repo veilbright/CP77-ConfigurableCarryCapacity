@@ -6,8 +6,10 @@ DEBUG = true
 local logtag = "init"
 
 -- Managers
-local SettingsManager = require("./core/settings_manager")
 local InventoryManager = require("./core/inventory_manager")
+local SettingsManager = require("./core/settings_manager")
+local TweakManager = require("./core/tweak_manager")
+
 
 -- Observers
 local EquipmentSystemPlayerDataObserver = require("./observers/EquipmentSystemPlayerData")
@@ -15,6 +17,7 @@ local InventoryDataManagerV2Observer = require("./observers/InventoryDataManager
 local PlayerPuppetObserver = require("./observers/PlayerPuppet")
 local VendorDataManagerObserver = require("./observers/VendorDataManager")
 
+-- Initialize Observers
 local function initialize_observers()
     EquipmentSystemPlayerDataObserver:initialize()
     InventoryDataManagerV2Observer:initialize()
@@ -22,12 +25,12 @@ local function initialize_observers()
     VendorDataManagerObserver:initialize()
 end
 
--- On CET Init, will load data filepaths and initialize SettingsManager and observers
+-- On CET Init, will initialize SettingsManager and observers
 registerForEvent("onInit", function()
     LogDebug(logtag, "Start initialization")
 
-    SettingsManager:initialize(InventoryManager)
     initialize_observers()
+    SettingsManager:initialize(InventoryManager, TweakManager)
 
     LogDebug(logtag, "End initialization")
 end)

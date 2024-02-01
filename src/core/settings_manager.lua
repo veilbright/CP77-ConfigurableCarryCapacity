@@ -6,6 +6,7 @@ local saved_settings_path = "./data/saved_settings.json"
 local presets_path = "./data/presets.json"
 
 local InventoryManager = {}
+local TweakManager = {}
 
 local settings_menu = {}
 
@@ -15,11 +16,10 @@ local pending_settings = {}
 local default_settings = {
     preset = 1,
     carryCapacity = 200,
-    noEquipWeight = true
+    carryCapacityBooster = 1.5,
+    noEquipWeight = true,
+    carryCapacityCyberwareModifiers = true,
 }
-
-local min_carry_capacity = 0
-local max_carry_capacity = 500
 
 local valid_presets = false
 local preset_selected = default_settings.preset
@@ -54,6 +54,7 @@ end
 -- Calls manager's apply_settings functions, sets active_settings to pending_settings, and saves the settings to a file
 local function apply_pending_settings()
     InventoryManager:apply_settings(pending_settings)
+    TweakManager:apply_settings(pending_settings)
 
     for name, value in pairs(pending_settings) do
         active_settings[name] = value
@@ -133,6 +134,20 @@ local function create_settings_menu()
         NativeSettings.addSubcategory(settings_path, "Settings")
     end
 
+    -- Settings Variables --
+
+    -- carry capacity
+    local min_carry_capacity = 0
+    local max_carry_capacity = 500
+    local carry_capacity_step = 1
+
+    -- carry capacity booster
+    local min_carry_capacity_booster = 1.0
+    local max_carry_capacity_booster = 3.0
+    local carry_capacity_booster_step = 0.05
+
+
+    -- Settings UI --
 
     -- if presets file isn't loaded, don't load the UI for it
     if valid_presets then
@@ -163,14 +178,38 @@ local function create_settings_menu()
         )
     end
 
-    -- carryCapacity slider int
+    -- noEquipWeight switch
+    settings_menu.noEquipWeight = NativeSettings.addSwitch(
+        settings_path,
+        "Equipped Items Don't Affect Carry Weight",
+        "Disable for vanilla settings",
+        active_settings.noEquipWeight,
+        default_settings.noEquipWeight,
+        function(state)
+            pending_settings.noEquipWeight = state
+        end
+    )
+
+    -- carryCapacityCyberwareModifiers switch
+    settings_menu.carryCapacityCyberwareModifiers = NativeSettings.addSwitch(
+        settings_path,
+        "Allow Cyberware Modifiers that Affect Carry Capacity",
+        "**REQUIRES RELOAD** Disnable to prevent the generation of cyberware modifiers (from buying or upgrading cyberware) that affect carry capacity",
+        active_settings.carryCapacityCyberwareModifiers,
+        default_settings.carryCapacityCyberwareModifiers,
+        function(state)
+            pending_settings.carryCapacityCyberwareModifiers = state
+        end
+    )
+
+    -- carryCapacity int slider
     settings_menu.carryCapacity = NativeSettings.addRangeInt(
         settings_path,
-        "Carry Capacity (Requires Reload)",
+        "Carry Capacity",
         "**REQUIRES RELOAD** Amount of weight that the player can carry before becoming overencumbered",
         min_carry_capacity,
         max_carry_capacity,
-        1,
+        carry_capacity_step,
         active_settings.carryCapacity,
         default_settings.carryCapacity,
         function(value)
@@ -178,15 +217,19 @@ local function create_settings_menu()
         end
     )
 
-    -- noEquipWeight switch
-    settings_menu.noEquipWeight = NativeSettings.addSwitch(
+    -- carryCapacityBooster float slider
+    settings_menu.carryCapacityBooster = NativeSettings.addRangeFloat(
         settings_path,
-        "Equipped Items Don't Affect Carry Weight",
-        "Weapons or clothing that you equip will not contribute to the amount of weight you are carrying",
-        active_settings.noEquipWeight,
-        default_settings.noEquipWeight,
-        function(state)
-            pending_settings.noEquipWeight = state
+        "Multiplier from Carry Capacity Booster",
+        "**REQUIRES RELOAD** Changes the multiplier from using a Carry Capacity Booster",
+        min_carry_capacity_booster,
+        max_carry_capacity_booster,
+        carry_capacity_booster_step,
+        "%.2f",
+        active_settings.carryCapacityBooster,
+        default_settings.carryCapacityBooster,
+        function(value)
+            pending_settings.carryCapacityBooster = value
         end
     )
 end
@@ -195,8 +238,10 @@ end
 -- SETTINGSMANAGER FUNCTIONS --
 
 ---@param inventory_manager table
-function SettingsManager:initialize(inventory_manager)
+---@param tweak_manager table
+function SettingsManager:initialize(inventory_manager, tweak_manager)
     InventoryManager = inventory_manager
+    TweakManager = tweak_manager
     load_presets()
     load_saved_settings()
     create_settings_menu()

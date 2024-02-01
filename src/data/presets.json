@@ -2,16 +2,19 @@
     {
         "name": "Default",
         "carryCapacity": 200,
-        "noEquipWeight": true
+        "noEquipWeight": true,
+        "carryCapacityClothingModifier": 0
     },
     {
         "name": "Realistic",
-        "carryCapacity": 10,
-        "noEquipWeight": true
+        "carryCapacity": 5,
+        "noEquipWeight": true,
+        "carryCapacityClothingModifier": 0
     },
     {
         "name": "Vanilla",
         "carryCapacity": 200,
-        "noEquipWeight": false
+        "noEquipWeight": false,
+        "carryCapacityClothingModifier": 10
     }
 ]
