@@ -31,30 +31,35 @@ function TweakManager:apply_settings(settings)
     if carry_capacity_cyberware_modifiers ~= settings.carryCapacityCyberwareModifiers then
         carry_capacity_cyberware_modifiers = settings.carryCapacityCyberwareModifiers
 
-        if not carry_capacity_cyberware_modifiers then
-            local modifier_groups = {
-                "ModifierGroups.AdvancedCyberwareModifiers.statModifiers",
-                "ModifierGroups.AdvancedCyberwareModifiersDriverUpdate.statModifiers",
-                "ModifierGroups.BodyCyberwareAdvanced.statModifiers",
-                "ModifierGroups.BodyCyberwareSimple.statModifiers",
-                "ModifierGroups.CyberwareModifierBoosts.statModifiers",
-                "ModifierGroups.GenericCyberwareVariantModifiers.statModifiers",
+        if not carry_capacity_cyberware_modifiers then                                  -- run if disabled
+            local modifier_groups = {                                                   -- all places Modifiers.CarryCapacity can be found
+                "Items.AdvancedBloodPumpStatsShard.statModifiers",
+                "Items.AdvancedPowerGripStatsShard.statModifiers",
+                "Items.AdvancedAdaptiveStemCellsStatsShard.statModifiers",
+                "Items.AdvancedPainReductorStatsShard.statModifiers",
+                "Items.AdvancedReinforcedMusclesStatsShard.statModifiers",
+                "Items.AdvancedAgileJointsStatsShard.statModifiers",
+                "Items.AdvancedRapidMuscleNurishStatsShard.statModifiers",
+                "Items.AdvancedTroubleFinderStatsShard.statModifiers",
                 "ModifierGroups.SimpleCyberwareModifiers.statModifiers",
-                "ModifierGroups.SimpleCyberwareVariantModifiers.statModifiers",
-                "ModifierGroups.SpecializedCyberwareModifiers.statModifiers",
+                "ModifierGroups.AdvancedCyberwareModifiersDriverUpdate.statModifiers",  
+                "ModifierGroups.CyberwareModifierBoosts.statModifiers",
+                "ModifierGroups.BodyCyberwareSimple.statModifiers",
                 "ModifierGroups.TechnicalAbilityCyberwareSimple.statModifiers",
+                "ModifierGroups.GenericCyberwareVariantModifiers.statModifiers",
+                "ModifierGroups.SimpleCyberwareVariantModifiers.statModifiers",
             }
         
-            for i, path in ipairs(modifier_groups) do
-                local modifier_table = TweakDB:GetFlat(path)
+            for i, path in ipairs(modifier_groups) do           -- go to every flat in the table above
+                local modifier_table = TweakDB:GetFlat(path)    -- returns a table of modifiers
         
-                for j, modifier in ipairs(modifier_table) do
-                    if modifier.value == "Modifiers.CarryCapacity" or modifier.value == "Modifiers.CarryCapacityRandom" or modifier.value == "Modifiers.CarryCapacityBoost" then
-                        table.remove(modifier_table, j)
+                for j, modifier in ipairs(modifier_table) do    -- loop through the table of modifiers
+                    if modifier.value == "Modifiers.CarryCapacity" or modifier.value == "Modifiers.CarryCapacityRandom" or modifier.value == "Modifiers.CarryCapacityBoost" or modifier.value == "Modifiers.CarryCapacityToggle" or modifier.value == "Modifiers.CarryCapacityQualityToggle" then
+                        table.remove(modifier_table, j)         -- remove any that have to do with carry capacity
                     end
                 end
         
-                TweakDB:SetFlat(path, modifier_table)
+                TweakDB:SetFlat(path, modifier_table)           -- replace the flat with the updated one
             end
         end
     end
