@@ -194,7 +194,7 @@ local function create_settings_menu()
     settings_menu.carryCapacityCyberwareModifiers = NativeSettings.addSwitch(
         settings_path,
         "Allow Cyberware Modifiers that Affect Carry Capacity",
-        "**REQUIRES RELOAD** Disnable to prevent the generation of cyberware modifiers (from buying or upgrading cyberware) that affect carry capacity",
+        "**REQUIRES RELOAD** Disable to prevent the generation of cyberware modifiers (from buying or upgrading cyberware) that affect carry capacity.",
         active_settings.carryCapacityCyberwareModifiers,
         default_settings.carryCapacityCyberwareModifiers,
         function(state)

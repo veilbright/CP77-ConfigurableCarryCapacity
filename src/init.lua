@@ -29,6 +29,8 @@ end
 registerForEvent("onInit", function()
     LogDebug(logtag, "Start initialization")
 
+    --TweakDB:SetFlat("Proficiencies.Player_StrengthSkill_Passives_inline1.id", "strength_skill_passives_low")
+
     initialize_observers()
     SettingsManager:initialize(InventoryManager, TweakManager)
 
@@ -56,7 +58,7 @@ end
 
 ---@param filepath string
 ---@return table
--- Loads a JSON file as a table. Logs an error if JSON isn't valid or file doesn't exist. Returns is_successful, contents
+-- Loads a JSON file as a table. Logs an error if JSON isn't valid or file doesn't exist. Returns contents
 function ProtectedLoadJSONFile(filepath)
     local is_successful, content = IsSuccessProtectedLoadJSONFile(filepath)
     return content

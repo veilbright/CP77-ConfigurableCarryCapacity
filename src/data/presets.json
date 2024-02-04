@@ -1,20 +1,27 @@
 [
     {
-        "name": "Default",
-        "carryCapacity": 200,
-        "noEquipWeight": true,
-        "carryCapacityClothingModifier": 0
+        "name": "Low Capacity",
+        "carryCapacity": 50,
+        "noEquipWeight": true
+    },
+    {
+        "name": "Medium Capacity",
+        "carryCapacity": 100,
+        "noEquipWeight": true
+    },
+    {
+        "name": "High Capacity",
+        "carryCapacity": 400,
+        "noEquipWeight": true
     },
     {
         "name": "Realistic",
         "carryCapacity": 5,
-        "noEquipWeight": true,
-        "carryCapacityClothingModifier": 0
+        "noEquipWeight": true
     },
     {
         "name": "Vanilla",
         "carryCapacity": 200,
-        "noEquipWeight": false,
-        "carryCapacityClothingModifier": 10
+        "noEquipWeight": false
     }
 ]
