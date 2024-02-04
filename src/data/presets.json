@@ -2,26 +2,41 @@
     {
         "name": "Low Capacity",
         "carryCapacity": 50,
-        "noEquipWeight": true
+        "carryCapacityBooster": 1.5,
+        "noEquipWeight": true,
+        "carryCapacityCyberwareModifiers": false,
+        "strengthSkillCarryCapacityPassive": 1
     },
     {
         "name": "Medium Capacity",
         "carryCapacity": 100,
-        "noEquipWeight": true
+        "carryCapacityBooster": 1.5,
+        "noEquipWeight": true,
+        "carryCapacityCyberwareModifiers": true,
+        "strengthSkillCarryCapacityPassive": 2
     },
     {
         "name": "High Capacity",
         "carryCapacity": 400,
-        "noEquipWeight": true
+        "carryCapacityBooster": 1.5,
+        "noEquipWeight": true,
+        "carryCapacityCyberwareModifiers": true,
+        "strengthSkillCarryCapacityPassive": 3
     },
     {
-        "name": "Realistic",
+        "name": "Realistic Capacity",
         "carryCapacity": 5,
-        "noEquipWeight": true
+        "carryCapacityBooster": 1.5,
+        "noEquipWeight": true,
+        "carryCapacityCyberwareModifiers": false,
+        "strengthSkillCarryCapacityPassive": 4
     },
     {
         "name": "Vanilla",
         "carryCapacity": 200,
-        "noEquipWeight": false
+        "carryCapacityBooster": 1.5,
+        "noEquipWeight": false,
+        "carryCapacityCyberwareModifiers": true,
+        "strengthSkillCarryCapacityPassive": 5
     }
 ]

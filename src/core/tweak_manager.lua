@@ -3,6 +3,7 @@ TweakManager = {}
 local carry_capacity = nil
 local carry_capacity_booster = nil
 local carry_capacity_cyberware_modifiers = nil
+local strength_skill_carry_capacity_passive_id = nil
 
 
 -- LOCAL FUNCTIONS --
@@ -52,12 +53,32 @@ local function set_carry_capacity_cyberware_modifiers()
     end
 end
 
+local function set_strength_skill_carry_capacity_passive_id()
+    local strength_skill_carry_capacity_ui = {
+        ["carry_capacity_overhaul_strength_skill_passives_low"] = {{15}, {35}},
+        ["carry_capacity_overhaul_strength_skill_passives_medium"] = {{25}, {75}},
+        ["carry_capacity_overhaul_strength_skill_passives_high"] = {{100}, {300}},
+        ["carry_capacity_overhaul_strength_skill_passives_realistic"] = {{1}, {1}},
+        ["strength_skill_passives"] = {{50}, {100}},
+    }
+
+    TweakDB:SetFlat("Proficiencies.Player_StrengthSkill_Passives_inline1.id", strength_skill_carry_capacity_passive_id)
+    TweakDB:SetFlat("Proficiencies.StrengthSkill_inline1.intValues", strength_skill_carry_capacity_ui[strength_skill_carry_capacity_passive_id][1])
+    TweakDB:SetFlat("Proficiencies.StrengthSkill_inline7.intValues", strength_skill_carry_capacity_ui[strength_skill_carry_capacity_passive_id][2])
+end
 
 -- TWEAKMANAGER FUNCTIONS --
 
 ---@param settings table
 -- Updates TweakDB for settings changed
 function TweakManager:apply_settings(settings)
+    local strength_skill_carry_capacity_passive_ids = {
+        [1] = "carry_capacity_overhaul_strength_skill_passives_low",
+        [2] = "carry_capacity_overhaul_strength_skill_passives_medium",
+        [3] = "carry_capacity_overhaul_strength_skill_passives_high",
+        [4] = "carry_capacity_overhaul_strength_skill_passives_realistic",
+        [5] = "strength_skill_passives",
+    }
 
     -- carry_capacity TODO: maybe reload doesn't have to be required?
     if carry_capacity ~= settings.carryCapacity then
@@ -77,7 +98,11 @@ function TweakManager:apply_settings(settings)
         set_carry_capacity_cyberware_modifiers()
     end
 
-    --TweakDB:SetFlat("Proficiencies.StrengthSkillPassive.id", "strength_skill_passives_low")
+    -- strength_skill_carry_capacity_passive_id
+    if strength_skill_carry_capacity_passive_id ~= strength_skill_carry_capacity_passive_ids[settings.strengthSkillCarryCapacityPassive] then
+        strength_skill_carry_capacity_passive_id = strength_skill_carry_capacity_passive_ids[settings.strengthSkillCarryCapacityPassive]
+        set_strength_skill_carry_capacity_passive_id()
+    end
     
 end
 

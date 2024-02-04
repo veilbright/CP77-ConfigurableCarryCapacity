@@ -19,6 +19,7 @@ local default_settings = {
     carryCapacityBooster = 1.5,
     noEquipWeight = true,
     carryCapacityCyberwareModifiers = true,
+    strengthSkillCarryCapacityPassive = 1,
 }
 
 local valid_presets = false
@@ -146,6 +147,14 @@ local function create_settings_menu()
     local max_carry_capacity_booster = 3.0
     local carry_capacity_booster_step = 0.05
 
+    -- carry capacity strength skill passive
+    local strength_skill_carry_capacity_passive_names = {
+        [1] = "Low",
+        [2] = "Medium",
+        [3] = "High",
+        [4] = "Realistic",
+        [5] = "Vanilla",
+    }
 
     -- Settings UI --
 
@@ -194,7 +203,7 @@ local function create_settings_menu()
     settings_menu.carryCapacityCyberwareModifiers = NativeSettings.addSwitch(
         settings_path,
         "Allow Cyberware Modifiers that Affect Carry Capacity",
-        "**REQUIRES RELOAD** Disable to prevent the generation of cyberware modifiers (from buying or upgrading cyberware) that affect carry capacity.",
+        "**REQUIRES RELOAD**\nDisable to prevent the generation of cyberware modifiers (from buying or upgrading cyberware) that affect carry capacity.",
         active_settings.carryCapacityCyberwareModifiers,
         default_settings.carryCapacityCyberwareModifiers,
         function(state)
@@ -206,7 +215,7 @@ local function create_settings_menu()
     settings_menu.carryCapacity = NativeSettings.addRangeInt(
         settings_path,
         "Carry Capacity",
-        "**REQUIRES RELOAD** Amount of weight that the player can carry before becoming overencumbered",
+        "**REQUIRES RELOAD**\nAmount of weight that the player can carry before becoming overencumbered",
         min_carry_capacity,
         max_carry_capacity,
         carry_capacity_step,
@@ -221,7 +230,7 @@ local function create_settings_menu()
     settings_menu.carryCapacityBooster = NativeSettings.addRangeFloat(
         settings_path,
         "Multiplier from Carry Capacity Booster",
-        "**REQUIRES RELOAD** Changes the multiplier from using a Carry Capacity Booster",
+        "**REQUIRES RELOAD**\nChanges the multiplier from using a Carry Capacity Booster",
         min_carry_capacity_booster,
         max_carry_capacity_booster,
         carry_capacity_booster_step,
@@ -230,6 +239,19 @@ local function create_settings_menu()
         default_settings.carryCapacityBooster,
         function(value)
             pending_settings.carryCapacityBooster = value
+        end
+    )
+
+    -- strengthSkillCarryCapacityPassive string list
+    settings_menu.strengthSkillCarryCapacityPassive = NativeSettings.addSelectorString(
+        settings_path,
+        "Solo Skill Carry Capacity Boost",
+        "**REQUIRES RELOAD**\nChanges the additional Capacity Capacity added by levels 5 and 25 of the Solo skill.\nLOW: Lvl 5: 15, Lvl 25: 35\nMEDIUM: Lvl 5: 25, Lvl 25: 75\nHIGH: Lvl 5: 100, Lvl 25: 300\nREALISTIC: Lvl 5: 1, Lvl 25: 1\nVANILLA: Lvl 5: 50, Lvl 25: 100",
+        strength_skill_carry_capacity_passive_names,
+        active_settings.strengthSkillCarryCapacityPassive,
+        default_settings.strengthSkillCarryCapacityPassive,
+        function(value)
+            pending_settings.strengthSkillCarryCapacityPassive = value
         end
     )
 end
