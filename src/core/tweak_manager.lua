@@ -4,6 +4,16 @@ local carry_capacity = nil
 local carry_capacity_booster = nil
 local carry_capacity_cyberware_modifiers = nil
 local strength_skill_carry_capacity_passive_id = nil
+local min_titanium_infused_bones_carry_capacity_boost = nil
+local max_titanium_infused_bones_carry_capacity_boost = nil
+
+local strength_skill_carry_capacity_passive_ids = {
+    [1] = "carry_capacity_overhaul_strength_skill_passives_low",
+    [2] = "carry_capacity_overhaul_strength_skill_passives_medium",
+    [3] = "carry_capacity_overhaul_strength_skill_passives_high",
+    [4] = "carry_capacity_overhaul_strength_skill_passives_realistic",
+    [5] = "strength_skill_passives",
+}
 
 
 -- LOCAL FUNCTIONS --
@@ -13,10 +23,10 @@ local function set_carry_capacity()
 end
 
 local function set_carry_capacity_booster()
-    --local ui_effect = {(carry_capacity_booster * 100) - 100}
+    local multiplier = 1 + (carry_capacity_booster / 100)   -- convert to float
 
-    TweakDB:SetFlat("BaseStatusEffect.CarryCapacityBooster_inline1.value", carry_capacity_booster)      -- changes actual effect
-    --TweakDB:SetFlat("BaseStatusEffect.CarryCapacityBooster_inline2.intValues", ui_effect)
+    TweakDB:SetFlat("BaseStatusEffect.CarryCapacityBooster_inline1.value", multiplier)      -- changes actual effect
+    --TweakDB:SetFlat("BaseStatusEffect.CarryCapacityBooster_inline2.intValues", {carry_capacity_booster})
 end
 
 local function set_carry_capacity_cyberware_modifiers()
@@ -67,18 +77,47 @@ local function set_strength_skill_carry_capacity_passive_id()
     TweakDB:SetFlat("Proficiencies.StrengthSkill_inline7.intValues", strength_skill_carry_capacity_ui[strength_skill_carry_capacity_passive_id][2])
 end
 
+local function set_titanium_infused_bones_carry_capacity_boost()
+    local min = min_titanium_infused_bones_carry_capacity_boost / 100   -- converts from UI to float
+    local max = max_titanium_infused_bones_carry_capacity_boost / 100   -- converts from UI to float
+    local step = (max-min) / 4                                          -- there are 10 steps, so divide by 10
+
+    -- Tier 1
+    TweakDB:SetFlat("Items.AdvancedTitaniumInfusedBonesCommon_inline1.value", min)
+    TweakDB:SetFlat("Items.AdvancedTitaniumInfusedBonesCommon_inline2.intValues", {min * 100})
+    TweakDB:SetFlat("Items.AdvancedTitaniumInfusedBonesCommon2_inline1.value", min)
+    TweakDB:SetFlat("Items.AdvancedTitaniumInfusedBonesCommon2_inline2.intValues", {min * 100})
+
+    -- Tier 2
+    TweakDB:SetFlat("Items.AdvancedTitaniumInfusedBonesUncommon_inline1.value", min+step)
+    TweakDB:SetFlat("Items.AdvancedTitaniumInfusedBonesUncommon_inline2.intValues", {(min+step) * 100})
+    TweakDB:SetFlat("Items.AdvancedTitaniumInfusedBonesUncommon2_inline1.value", min+step)
+    TweakDB:SetFlat("Items.AdvancedTitaniumInfusedBonesUncommon2_inline2.intValues", {(min+step) * 100})
+
+    -- Tier 3
+    TweakDB:SetFlat("Items.AdvancedTitaniumInfusedBonesRare_inline1.value", min+(step*2))
+    TweakDB:SetFlat("Items.AdvancedTitaniumInfusedBonesRare_inline2.intValues", {math.floor((min+(step*2)) * 100)})
+    TweakDB:SetFlat("Items.AdvancedTitaniumInfusedBonesRare2_inline1.value", min+(step*2))
+    TweakDB:SetFlat("Items.AdvancedTitaniumInfusedBonesRare2_inline2.intValues", {math.floor((min+(step*2)) * 100)})
+
+    -- Tier 4
+    TweakDB:SetFlat("Items.AdvancedTitaniumInfusedBonesEpic_inline1.value", min+(step*3))
+    TweakDB:SetFlat("Items.AdvancedTitaniumInfusedBonesEpic_inline2.intValues", {math.floor((min+(step*3)) * 100)})
+    TweakDB:SetFlat("Items.AdvancedTitaniumInfusedBonesEpic2_inline1.value", min+(step*3))
+    TweakDB:SetFlat("Items.AdvancedTitaniumInfusedBonesEpic2_inline2.intValues", {math.floor((min+(step*3)) * 100)})
+
+    -- Tier 5
+    TweakDB:SetFlat("Items.AdvancedTitaniumInfusedBonesLegendary_inline1.value", max)
+    TweakDB:SetFlat("Items.AdvancedTitaniumInfusedBonesLegendary_inline2.intValues", {max * 100})
+    TweakDB:SetFlat("Items.AdvancedTitaniumInfusedBonesLegendary2_inline1.value", max)
+    TweakDB:SetFlat("Items.AdvancedTitaniumInfusedBonesLegendary2_inline2.intValues", {max * 100})
+end
+
 -- TWEAKMANAGER FUNCTIONS --
 
 ---@param settings table
 -- Updates TweakDB for settings changed
 function TweakManager:apply_settings(settings)
-    local strength_skill_carry_capacity_passive_ids = {
-        [1] = "carry_capacity_overhaul_strength_skill_passives_low",
-        [2] = "carry_capacity_overhaul_strength_skill_passives_medium",
-        [3] = "carry_capacity_overhaul_strength_skill_passives_high",
-        [4] = "carry_capacity_overhaul_strength_skill_passives_realistic",
-        [5] = "strength_skill_passives",
-    }
 
     -- carry_capacity TODO: maybe reload doesn't have to be required?
     if carry_capacity ~= settings.carryCapacity then
@@ -102,6 +141,13 @@ function TweakManager:apply_settings(settings)
     if strength_skill_carry_capacity_passive_id ~= strength_skill_carry_capacity_passive_ids[settings.strengthSkillCarryCapacityPassive] then
         strength_skill_carry_capacity_passive_id = strength_skill_carry_capacity_passive_ids[settings.strengthSkillCarryCapacityPassive]
         set_strength_skill_carry_capacity_passive_id()
+    end
+    
+    -- titanium_infused_bones_carry_capacity_boost
+    if min_titanium_infused_bones_carry_capacity_boost ~= settings.minTitaniumInfusedBonesCarryCapacityBoost or max_titanium_infused_bones_carry_capacity_boost ~= settings.maxTitaniumInfusedBonesCarryCapacityBoost then
+        min_titanium_infused_bones_carry_capacity_boost = settings.minTitaniumInfusedBonesCarryCapacityBoost
+        max_titanium_infused_bones_carry_capacity_boost = settings.maxTitaniumInfusedBonesCarryCapacityBoost
+        set_titanium_infused_bones_carry_capacity_boost()
     end
     
 end

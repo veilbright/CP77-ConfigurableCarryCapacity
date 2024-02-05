@@ -1,42 +1,52 @@
 [
     {
-        "name": "Low Capacity",
+        "key": "settings.presets.low.name",
         "carryCapacity": 50,
-        "carryCapacityBooster": 1.5,
-        "noEquipWeight": true,
+        "carryCapacityBooster": 50,
         "carryCapacityCyberwareModifiers": false,
+        "maxTitaniumInfusedBonesCarryCapacityBoost": 50,
+        "minTitaniumInfusedBonesCarryCapacityBoost": 10,
+        "noEquipWeight": true,
         "strengthSkillCarryCapacityPassive": 1
     },
     {
-        "name": "Medium Capacity",
+        "key": "settings.presets.medium.name",
         "carryCapacity": 100,
-        "carryCapacityBooster": 1.5,
-        "noEquipWeight": true,
+        "carryCapacityBooster": 50,
         "carryCapacityCyberwareModifiers": true,
+        "maxTitaniumInfusedBonesCarryCapacityBoost": 60,
+        "minTitaniumInfusedBonesCarryCapacityBoost": 20,
+        "noEquipWeight": true,
         "strengthSkillCarryCapacityPassive": 2
     },
     {
-        "name": "High Capacity",
+        "key": "settings.presets.high.name",
         "carryCapacity": 400,
-        "carryCapacityBooster": 1.5,
-        "noEquipWeight": true,
+        "carryCapacityBooster": 50,
         "carryCapacityCyberwareModifiers": true,
+        "maxTitaniumInfusedBonesCarryCapacityBoost": 70,
+        "minTitaniumInfusedBonesCarryCapacityBoost": 30,
+        "noEquipWeight": true,
         "strengthSkillCarryCapacityPassive": 3
     },
     {
-        "name": "Realistic Capacity",
+        "key": "settings.presets.realistic.name",
         "carryCapacity": 5,
-        "carryCapacityBooster": 1.5,
-        "noEquipWeight": true,
+        "carryCapacityBooster": 50,
         "carryCapacityCyberwareModifiers": false,
+        "maxTitaniumInfusedBonesCarryCapacityBoost": 10,
+        "minTitaniumInfusedBonesCarryCapacityBoost": 30,
+        "noEquipWeight": true,
         "strengthSkillCarryCapacityPassive": 4
     },
     {
-        "name": "Vanilla",
+        "key": "settings.presets.vanilla.name",
         "carryCapacity": 200,
-        "carryCapacityBooster": 1.5,
-        "noEquipWeight": false,
+        "carryCapacityBooster": 50,
         "carryCapacityCyberwareModifiers": true,
+        "maxTitaniumInfusedBonesCarryCapacityBoost": 34,
+        "minTitaniumInfusedBonesCarryCapacityBoost": 66,
+        "noEquipWeight": false,
         "strengthSkillCarryCapacityPassive": 5
     }
 ]

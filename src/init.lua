@@ -5,6 +5,9 @@ ModName = "Carry Capacity Overhaul"
 DEBUG = true
 local logtag = "init"
 
+-- Global Managers
+LocalizationManager = require("./core/localization_manager")
+
 -- Managers
 local InventoryManager = require("./core/inventory_manager")
 local SettingsManager = require("./core/settings_manager")
@@ -32,6 +35,7 @@ registerForEvent("onInit", function()
     --TweakDB:SetFlat("Proficiencies.Player_StrengthSkill_Passives_inline1.id", "strength_skill_passives_low")
 
     initialize_observers()
+    LocalizationManager:initialize()
     SettingsManager:initialize(InventoryManager, TweakManager)
 
     LogDebug(logtag, "End initialization")
@@ -47,7 +51,7 @@ end)
 function LoadJSONFile(filepath)
     local file = io.open(filepath, "r")
 
-    if (file == nil) then
+    if file == nil then
         LogDebug(logtag, "Failed to load "..filepath)
         error()
     end
@@ -70,7 +74,7 @@ end
 function IsSuccessProtectedLoadJSONFile(filepath)
     local is_successful, content = pcall(function() return LoadJSONFile(filepath) end)
 
-    if (not is_successful) then
+    if not is_successful then
         LogError(logtag, filepath.." is not valid JSON")
         return false, {}
     end
