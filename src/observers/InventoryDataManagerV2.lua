@@ -7,14 +7,14 @@ local InventoryDataManagerV2Observer = {}
 ---@param itemID ItemID
 ---@param slot number
 local function observe_before_EquipItem(inventory_data_manager_v2, itemID, slot)
-    InventoryManager:before_equip_item(inventory_data_manager_v2, itemID, slot)
+    EncumbranceManager:before_equip_item(inventory_data_manager_v2, itemID, slot)
 end
 
 ---@param inventory_data_manager_v2 InventoryDataManagerV2
 ---@param equip_area gamedataEquipmentArea
 ---@param slot number
 local function observe_before_UnequipItem(inventory_data_manager_v2, equip_area, slot)
-    InventoryManager:before_unequip_item(inventory_data_manager_v2, equip_area, slot)
+    EncumbranceManager:before_unequip_item(inventory_data_manager_v2, equip_area, slot)
 end
 
 

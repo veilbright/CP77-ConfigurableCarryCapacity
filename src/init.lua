@@ -1,6 +1,6 @@
-local CarryCapacityOverhaul = {}
+local ConfigurableCarryCapacity = {}
 
-ModName = "Carry Capacity Overhaul"
+ModName = "Configurable Carry Capacity"
 
 DEBUG = true
 local logtag = "init"
@@ -9,22 +9,18 @@ local logtag = "init"
 LocalizationManager = require("./core/localization_manager")
 
 -- Managers
-local InventoryManager = require("./core/inventory_manager")
+local EncumbranceManager = require("./core/encumbrance_manager")
 local SettingsManager = require("./core/settings_manager")
 local TweakManager = require("./core/tweak_manager")
 
 
 -- Observers
-local EquipmentSystemPlayerDataObserver = require("./observers/EquipmentSystemPlayerData")
 local InventoryDataManagerV2Observer = require("./observers/InventoryDataManagerV2")
-local PlayerPuppetObserver = require("./observers/PlayerPuppet")
 local VendorDataManagerObserver = require("./observers/VendorDataManager")
 
 -- Initialize Observers
 local function initialize_observers()
-    EquipmentSystemPlayerDataObserver:initialize()
     InventoryDataManagerV2Observer:initialize()
-    PlayerPuppetObserver:initialize()
     VendorDataManagerObserver:initialize()
 end
 
@@ -32,11 +28,9 @@ end
 registerForEvent("onInit", function()
     LogDebug(logtag, "Start initialization")
 
-    --TweakDB:SetFlat("Proficiencies.Player_StrengthSkill_Passives_inline1.id", "strength_skill_passives_low")
-
     initialize_observers()
     LocalizationManager:initialize()
-    SettingsManager:initialize(InventoryManager, TweakManager)
+    SettingsManager:initialize(EncumbranceManager, TweakManager)
 
     LogDebug(logtag, "End initialization")
 end)
@@ -145,4 +139,4 @@ function DumpTable(o)
     end
  end
 
-return CarryCapacityOverhaul
+return ConfigurableCarryCapacity

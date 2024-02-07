@@ -5,7 +5,7 @@ local logtag = "settings_manager"
 local saved_settings_path = "./data/saved_settings.json"
 local presets_path = "./data/presets.json"
 
-local InventoryManager = {}
+local EncumbranceManager = {}
 local TweakManager = {}
 
 local settings_menu = {}
@@ -18,6 +18,7 @@ local default_settings = {
     carryCapacity = 200,
     carryCapacityBooster = 1.5,
     carryCapacityCyberwareModifiers = true,
+    ignoreQuestWeight = true,
     maxTitaniumInfusedBonesCarryCapacityBoost = 66,
     minTitaniumInfusedBonesCarryCapacityBoost = 30,
     noEquipWeight = true,
@@ -56,7 +57,7 @@ end
 
 -- Calls manager's apply_settings functions, sets active_settings to pending_settings, and saves the settings to a file
 local function apply_pending_settings()
-    InventoryManager:apply_settings(pending_settings)
+    EncumbranceManager:apply_settings(pending_settings)
     TweakManager:apply_settings(pending_settings)
 
     for name, value in pairs(pending_settings) do
@@ -214,6 +215,18 @@ local function create_settings_menu()
         end
     )
 
+    -- ignoreQuestWeight switch
+    settings_menu.ignoreQuestWeight = NativeSettings.addSwitch(
+        settings_path,
+        LocalizationManager:get_translation("settings.settings.ignoreQuestWeight.label"),
+        LocalizationManager:get_translation("settings.settings.ignoreQuestWeight.description"),
+        active_settings.ignoreQuestWeight,
+        default_settings.ignoreQuestWeight,
+        function(state)
+            pending_settings.ignoreQuestWeight = state
+        end
+    )
+
     -- carryCapacityCyberwareModifiers switch
     settings_menu.carryCapacityCyberwareModifiers = NativeSettings.addSwitch(
         settings_path,
@@ -303,10 +316,10 @@ end
 
 -- SETTINGSMANAGER FUNCTIONS --
 
----@param inventory_manager table
+---@param encumbrance_manager table
 ---@param tweak_manager table
-function SettingsManager:initialize(inventory_manager, tweak_manager)
-    InventoryManager = inventory_manager
+function SettingsManager:initialize(encumbrance_manager, tweak_manager)
+    EncumbranceManager = encumbrance_manager
     TweakManager = tweak_manager
     load_presets()
     load_saved_settings()

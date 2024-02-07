@@ -1,5 +1,5 @@
 {
-    "modName": "Carry Capacity Overhaul",
+    "modName": "Configurable Carry Capacity",
     "settings.presets.apply.button.label": "Apply",
     "settings.presets.apply.description": "Applies the settings from the preset selected above",
     "settings.presets.apply.label": "Apply Preset",
@@ -17,6 +17,8 @@
     "settings.settings.carryCapacityBooster.label": "Multiplier from Carry Capacity Booster",
     "settings.settings.carryCapacityCyberwareModifiers.description": "**REQUIRES RELOAD**\nDisable to prevent the generation of cyberware modifiers (from buying or upgrading cyberware) that affect carry capacity.",
     "settings.settings.carryCapacityCyberwareModifiers.label": "Allow Cyberware Modifiers that Affect Carry Capacity",
+    "settings.settings.ignoreQuestWeight.description": "Enable to ignore the weight added from items that can't be dropped.",
+    "settings.settings.ignoreQuestWeight.label": "Ignore Weight from Quest Items",
     "settings.settings.name": "Settings",
     "settings.settings.noEquipWeight.description": "Enable to not count equipped weapons and clothes towards weight held. Disable for vanilla settings",
     "settings.settings.noEquipWeight.label": "Equipped Items Don't Affect Carry Weight",

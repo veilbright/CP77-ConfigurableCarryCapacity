@@ -8,10 +8,10 @@ local min_titanium_infused_bones_carry_capacity_boost = nil
 local max_titanium_infused_bones_carry_capacity_boost = nil
 
 local strength_skill_carry_capacity_passive_ids = {
-    [1] = "carry_capacity_overhaul_strength_skill_passives_low",
-    [2] = "carry_capacity_overhaul_strength_skill_passives_medium",
-    [3] = "carry_capacity_overhaul_strength_skill_passives_high",
-    [4] = "carry_capacity_overhaul_strength_skill_passives_realistic",
+    [1] = "configurable_carry_capacity_strength_skill_passives_low",
+    [2] = "configurable_carry_capacity_strength_skill_passives_medium",
+    [3] = "configurable_carry_capacity_strength_skill_passives_high",
+    [4] = "configurable_carry_capacity_strength_skill_passives_realistic",
     [5] = "strength_skill_passives",
 }
 
@@ -65,10 +65,10 @@ end
 
 local function set_strength_skill_carry_capacity_passive_id()
     local strength_skill_carry_capacity_ui = {
-        ["carry_capacity_overhaul_strength_skill_passives_low"] = {{15}, {35}},
-        ["carry_capacity_overhaul_strength_skill_passives_medium"] = {{25}, {75}},
-        ["carry_capacity_overhaul_strength_skill_passives_high"] = {{100}, {300}},
-        ["carry_capacity_overhaul_strength_skill_passives_realistic"] = {{1}, {1}},
+        ["configurable_carry_capacity_strength_skill_passives_low"] = {{15}, {35}},
+        ["configurable_carry_capacity_strength_skill_passives_medium"] = {{25}, {75}},
+        ["configurable_carry_capacity_strength_skill_passives_high"] = {{100}, {300}},
+        ["configurable_carry_capacity_strength_skill_passives_realistic"] = {{1}, {1}},
         ["strength_skill_passives"] = {{50}, {100}},
     }
 
@@ -84,15 +84,15 @@ local function set_titanium_infused_bones_carry_capacity_boost()
 
     -- Tier 1
     TweakDB:SetFlat("Items.AdvancedTitaniumInfusedBonesCommon_inline1.value", min)
-    TweakDB:SetFlat("Items.AdvancedTitaniumInfusedBonesCommon_inline2.intValues", {min * 100})
+    TweakDB:SetFlat("Items.AdvancedTitaniumInfusedBonesCommon_inline2.intValues", {math.floor(min * 100)})
     TweakDB:SetFlat("Items.AdvancedTitaniumInfusedBonesCommon2_inline1.value", min)
-    TweakDB:SetFlat("Items.AdvancedTitaniumInfusedBonesCommon2_inline2.intValues", {min * 100})
+    TweakDB:SetFlat("Items.AdvancedTitaniumInfusedBonesCommon2_inline2.intValues", {math.floor(min * 100)})
 
     -- Tier 2
     TweakDB:SetFlat("Items.AdvancedTitaniumInfusedBonesUncommon_inline1.value", min+step)
-    TweakDB:SetFlat("Items.AdvancedTitaniumInfusedBonesUncommon_inline2.intValues", {(min+step) * 100})
+    TweakDB:SetFlat("Items.AdvancedTitaniumInfusedBonesUncommon_inline2.intValues", {math.floor((min+step) * 100)})
     TweakDB:SetFlat("Items.AdvancedTitaniumInfusedBonesUncommon2_inline1.value", min+step)
-    TweakDB:SetFlat("Items.AdvancedTitaniumInfusedBonesUncommon2_inline2.intValues", {(min+step) * 100})
+    TweakDB:SetFlat("Items.AdvancedTitaniumInfusedBonesUncommon2_inline2.intValues", {math.floor((min+step) * 100)})
 
     -- Tier 3
     TweakDB:SetFlat("Items.AdvancedTitaniumInfusedBonesRare_inline1.value", min+(step*2))
@@ -149,7 +149,6 @@ function TweakManager:apply_settings(settings)
         max_titanium_infused_bones_carry_capacity_boost = settings.maxTitaniumInfusedBonesCarryCapacityBoost
         set_titanium_infused_bones_carry_capacity_boost()
     end
-    
 end
 
 return TweakManager

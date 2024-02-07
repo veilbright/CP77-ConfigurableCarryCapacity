@@ -5,12 +5,12 @@ local VendorDataManagerObserver = {}
 
 ---@param item_data gameItemData
 local function observe_before_TransferItem(class, source, target, item_data)
-    InventoryManager:before_transfer_item(item_data)
+    EncumbranceManager:before_transfer_item(item_data)
 end
 
 ---@param item_data gameItemData
 local function observe_before_SellItemToVendor(class, item_data)
-    InventoryManager:before_sell_item(item_data)
+    EncumbranceManager:before_sell_item(item_data)
 end
 
 
