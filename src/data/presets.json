@@ -1,6 +1,7 @@
 [
     {
         "key": "settings.presets.low.name",
+        "blackmarketCarryCapacityBooster": 25,
         "carryCapacity": 50,
         "carryCapacityBooster": 50,
         "carryCapacityCyberwareModifiers": false,
@@ -12,6 +13,7 @@
     },
     {
         "key": "settings.presets.medium.name",
+        "blackmarketCarryCapacityBooster": 50,
         "carryCapacity": 100,
         "carryCapacityBooster": 50,
         "carryCapacityCyberwareModifiers": true,
@@ -23,6 +25,7 @@
     },
     {
         "key": "settings.presets.high.name",
+        "blackmarketCarryCapacityBooster": 200,
         "carryCapacity": 400,
         "carryCapacityBooster": 50,
         "carryCapacityCyberwareModifiers": true,
@@ -34,6 +37,7 @@
     },
     {
         "key": "settings.presets.realistic.name",
+        "blackmarketCarryCapacityBooster": 2,
         "carryCapacity": 5,
         "carryCapacityBooster": 50,
         "carryCapacityCyberwareModifiers": false,
@@ -45,6 +49,7 @@
     },
     {
         "key": "settings.presets.vanilla.name",
+        "blackmarketCarryCapacityBooster": 100,
         "carryCapacity": 200,
         "carryCapacityBooster": 50,
         "carryCapacityCyberwareModifiers": true,

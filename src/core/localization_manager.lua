@@ -1,7 +1,7 @@
 local LocalizationManager = {}
 
 
-local localization_path = "i18n.defaul.json"
+local localization_path = "i18n.default.json"
 
 local i18n_table = {}
 

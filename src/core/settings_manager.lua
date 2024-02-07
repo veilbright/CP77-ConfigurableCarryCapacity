@@ -15,8 +15,9 @@ local pending_settings = {}
 
 local default_settings = {
     preset = 1,
+    blackmarketCarryCapacityBooster = 100;
     carryCapacity = 200,
-    carryCapacityBooster = 1.5,
+    carryCapacityBooster = 50,
     carryCapacityCyberwareModifiers = true,
     ignoreQuestWeight = true,
     maxTitaniumInfusedBonesCarryCapacityBoost = 66,
@@ -66,7 +67,7 @@ local function apply_pending_settings()
     save_settings()
 end
 
--- Sets pending_settings to defaul_settings and applies them
+-- Sets pending_settings to default_settings and applies them
 local function apply_default_settings()
     set_default_settings()
     apply_pending_settings()
@@ -158,7 +159,7 @@ local function create_settings_menu()
     local titanium_infused_bones_carry_capacity_boost_max_setting = 300
     local titanium_infused_bones_carry_capacity_boost_step = 1
 
-    -- carry capacity booster
+    -- carry capacity boosters
     local min_carry_capacity_booster = 0
     local max_carry_capacity_booster = 300
     local carry_capacity_booster_step = 1
@@ -296,6 +297,21 @@ local function create_settings_menu()
         default_settings.carryCapacityBooster,
         function(value)
             pending_settings.carryCapacityBooster = value
+        end
+    )
+
+    -- blackmarketCarryCapacityBooster int slider
+    settings_menu.blackmarketCarryCapacityBooster = NativeSettings.addRangeInt(
+        settings_path,
+        LocalizationManager:get_translation("settings.settings.blackmarketCarryCapacityBooster.label"),
+        LocalizationManager:get_translation("settings.settings.blackmarketCarryCapacityBooster.description"),
+        min_carry_capacity_booster,
+        max_carry_capacity_booster,
+        carry_capacity_booster_step,
+        active_settings.blackmarketCarryCapacityBooster,
+        default_settings.blackmarketCarryCapacityBooster,
+        function(value)
+            pending_settings.blackmarketCarryCapacityBooster = value
         end
     )
 

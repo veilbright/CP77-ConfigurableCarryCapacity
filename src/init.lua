@@ -30,6 +30,7 @@ registerForEvent("onInit", function()
 
     initialize_observers()
     LocalizationManager:initialize()
+    TweakManager:initialize()
     SettingsManager:initialize(EncumbranceManager, TweakManager)
 
     LogDebug(logtag, "End initialization")

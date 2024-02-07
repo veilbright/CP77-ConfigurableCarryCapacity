@@ -1,5 +1,6 @@
 TweakManager = {}
 
+local blackmarket_carry_capacity_booster = nil;
 local carry_capacity = nil
 local carry_capacity_booster = nil
 local carry_capacity_cyberware_modifiers = nil
@@ -25,8 +26,13 @@ end
 local function set_carry_capacity_booster()
     local multiplier = 1 + (carry_capacity_booster / 100)   -- convert to float
 
-    TweakDB:SetFlat("BaseStatusEffect.CarryCapacityBooster_inline1.value", multiplier)      -- changes actual effect
-    --TweakDB:SetFlat("BaseStatusEffect.CarryCapacityBooster_inline2.intValues", {carry_capacity_booster})
+    TweakDB:SetFlat("BaseStatusEffect.CarryCapacityBooster_inline1.value", multiplier)          -- changes actual effect
+    TweakDB:SetFlat("Items.CarryCapacityBooster_inline1.intValues", {carry_capacity_booster})   -- chanegs UI
+end
+
+local function set_blackmarket_carry_capacity_booster()
+    TweakDB:SetFlat("BaseStatusEffect.Blackmarket_CarryCapacityBooster_inline1.value", blackmarket_carry_capacity_booster)  -- changes actual effect
+    TweakDB:SetFlat("Items.Blackmarket_CarryCapacityBooster_inline3.intValues", {blackmarket_carry_capacity_booster, 20})       -- changes UI
 end
 
 local function set_carry_capacity_cyberware_modifiers()
@@ -115,20 +121,33 @@ end
 
 -- TWEAKMANAGER FUNCTIONS --
 
+-- Fixes bugs with blackmarket_carrycapacitybooster (Ol Donkey)
+function TweakManager:initialize()
+    TweakDB:SetFlat("Items.Blackmarket_CarryCapacityBooster_inline5.localizedDescription", "None")          -- remove this lockey
+    TweakDB:SetFlat("Items.Blackmarket_CarryCapacityBooster_inline3.localizedDescription", "LocKey#92976")  -- correct lockey, but not broken up
+    TweakDB:SetFlat("Items.Blackmarket_CarryCapacityBooster_inline3.intValues", {100, 20})                  -- filling in lockey based on default values
+end
+
 ---@param settings table
 -- Updates TweakDB for settings changed
 function TweakManager:apply_settings(settings)
 
-    -- carry_capacity TODO: maybe reload doesn't have to be required?
+    -- carry_capacity
     if carry_capacity ~= settings.carryCapacity then
         carry_capacity = settings.carryCapacity
         set_carry_capacity()
     end
 
-    -- carry_capacity_booster TODO: maybe reload doesn't have to be required?
+    -- carry_capacity_booster
     if carry_capacity_booster ~= settings.carryCapacityBooster then
         carry_capacity_booster = settings.carryCapacityBooster
         set_carry_capacity_booster()
+    end
+
+    -- blackmarket_carry_capacity_booster
+    if blackmarket_carry_capacity_booster ~= settings.blackmarketCarryCapacityBooster then
+        blackmarket_carry_capacity_booster = settings.blackmarketCarryCapacityBooster
+        set_blackmarket_carry_capacity_booster()
     end
 
     -- carry_capacity_cyberware_modifiers
