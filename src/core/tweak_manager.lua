@@ -4,6 +4,7 @@ local blackmarket_carry_capacity_booster = nil;
 local carry_capacity = nil
 local carry_capacity_booster = nil
 local carry_capacity_cyberware_modifiers = nil
+local infinite_carry_capacity = nil
 local strength_skill_carry_capacity_passive_id = nil
 local min_titanium_infused_bones_carry_capacity_boost = nil
 local max_titanium_infused_bones_carry_capacity_boost = nil
@@ -20,7 +21,11 @@ local strength_skill_carry_capacity_passive_ids = {
 -- LOCAL FUNCTIONS --
 
 local function set_carry_capacity()
-    TweakDB:SetFlat("Character.Player_Primary_Stats_Base_inline13.value", carry_capacity)
+    if infinite_carry_capacity then
+        TweakDB:SetFlat("Character.Player_Primary_Stats_Base_inline13.value", math.huge)
+    else
+        TweakDB:SetFlat("Character.Player_Primary_Stats_Base_inline13.value", carry_capacity)
+    end
 end
 
 local function set_carry_capacity_booster()
@@ -135,6 +140,12 @@ function TweakManager:apply_settings(settings)
     -- carry_capacity
     if carry_capacity ~= settings.carryCapacity then
         carry_capacity = settings.carryCapacity
+        set_carry_capacity()
+    end
+
+    -- infinite_carry_capacity
+    if infinite_carry_capacity ~= settings.infiniteCarryCapacity then
+        infinite_carry_capacity = settings.infiniteCarryCapacity
         set_carry_capacity()
     end
 

@@ -31,8 +31,6 @@ protected cb func OnStatusEffectApplied(evt: ref<ApplyStatusEffectEvent>) -> Boo
 
     let modifier: Float = this.carryShardBoost - 2.0;
 
-    LogChannel(n"DEBUG", FloatToStringPrec(modifier, 2));
-
     if modifier != 0.0 && evt.staticData.GameplayTagsContains(n"CarryShard") {
         let permaMod: ref<gameStatModifierData> = RPGManager.CreateStatModifier(gamedataStatType.CarryCapacity, gameStatModifierType.Additive, modifier);
         GameInstance.GetStatsSystem(this.GetGame()).AddSavedModifier(Cast<StatsObjectID>(this.GetEntityID()), permaMod);

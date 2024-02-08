@@ -21,6 +21,7 @@ local default_settings = {
     carryCapacityCyberwareModifiers = true,
     carryShardBoost = 2.0;
     ignoreQuestWeight = true,
+    infiniteCarryCapacity = false;
     maxTitaniumInfusedBonesCarryCapacityBoost = 66,
     minTitaniumInfusedBonesCarryCapacityBoost = 30,
     noEquipWeight = true,
@@ -222,6 +223,18 @@ local function create_settings_menu()
         default_settings.carryCapacity,
         function(value)
             pending_settings.carryCapacity = value
+        end
+    )
+
+    -- infiniteCarryCapacity switch
+    settings_menu.infiniteCarryCapacity = NativeSettings.addSwitch(
+        settings_path,
+        LocalizationManager:get_translation("settings.settings.infiniteCarryCapacity.label"),
+        LocalizationManager:get_translation("settings.settings.infiniteCarryCapacity.description"),
+        active_settings.infiniteCarryCapacity,
+        default_settings.infiniteCarryCapacity,
+        function(state)
+            pending_settings.infiniteCarryCapacity = state
         end
     )
 
