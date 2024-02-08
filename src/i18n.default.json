@@ -19,6 +19,8 @@
     "settings.settings.carryCapacityBooster.label": "Carry Capacity Booster Multiplier",
     "settings.settings.carryCapacityCyberwareModifiers.description": "**REQUIRES RELOAD**\nDisable to prevent the generation of cyberware modifiers (from buying or upgrading cyberware) that affect carry capacity. Enable for vanilla settings.",
     "settings.settings.carryCapacityCyberwareModifiers.label": "Allow Carry Capacity Cyberware Modifiers",
+    "settings.settings.carryShardBoost.description": "Controls how much Carry Capacity is gained from Carry Shards in the air drops in Phantom Liberty.\n\nPreviously gained Carry Capacity from this manner will not be affected, but it is possible for you to edit your save file to remove it.",
+    "settings.settings.carryShardBoost.label": "Carry Shard Capacity Boost",
     "settings.settings.ignoreQuestWeight.description": "Enable to ignore the weight added from items that can't be dropped. Disable for vanilla settings,",
     "settings.settings.ignoreQuestWeight.label": "Ignore Weight from Quest Items",
     "settings.settings.name": "Settings",

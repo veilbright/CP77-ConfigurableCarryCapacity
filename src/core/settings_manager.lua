@@ -19,6 +19,7 @@ local default_settings = {
     carryCapacity = 200,
     carryCapacityBooster = 50,
     carryCapacityCyberwareModifiers = true,
+    carryShardBoost = 2.0;
     ignoreQuestWeight = true,
     maxTitaniumInfusedBonesCarryCapacityBoost = 66,
     minTitaniumInfusedBonesCarryCapacityBoost = 30,
@@ -154,15 +155,20 @@ local function create_settings_menu()
     local max_carry_capacity = 500
     local carry_capacity_step = 1
 
-    -- titanium infused bones carry capacity boost
-    local titanium_infused_bones_carry_capacity_boost_min_setting = 0
-    local titanium_infused_bones_carry_capacity_boost_max_setting = 300
-    local titanium_infused_bones_carry_capacity_boost_step = 1
-
     -- carry capacity boosters
     local min_carry_capacity_booster = 0
     local max_carry_capacity_booster = 300
     local carry_capacity_booster_step = 1
+
+    -- carry shard boost
+    local min_carry_shard_boost = 0.0
+    local max_carry_shard_boost = 10.0
+    local carry_shard_boost_step = 0.1
+
+    -- titanium infused bones carry capacity boost
+    local titanium_infused_bones_carry_capacity_boost_min_setting = 0
+    local titanium_infused_bones_carry_capacity_boost_max_setting = 300
+    local titanium_infused_bones_carry_capacity_boost_step = 1
 
     -- carry capacity strength skill passive
     local strength_skill_carry_capacity_passive_names = {
@@ -204,6 +210,21 @@ local function create_settings_menu()
         )
     end
 
+    -- carryCapacity int slider
+    settings_menu.carryCapacity = NativeSettings.addRangeInt(
+        settings_path,
+        LocalizationManager:get_translation("settings.settings.carryCapacity.label"),
+        LocalizationManager:get_translation("settings.settings.carryCapacity.description"),
+        min_carry_capacity,
+        max_carry_capacity,
+        carry_capacity_step,
+        active_settings.carryCapacity,
+        default_settings.carryCapacity,
+        function(value)
+            pending_settings.carryCapacity = value
+        end
+    )
+
     -- noEquipWeight switch
     settings_menu.noEquipWeight = NativeSettings.addSwitch(
         settings_path,
@@ -240,48 +261,16 @@ local function create_settings_menu()
         end
     )
 
-    -- carryCapacity int slider
-    settings_menu.carryCapacity = NativeSettings.addRangeInt(
+    -- strengthSkillCarryCapacityPassive string list
+    settings_menu.strengthSkillCarryCapacityPassive = NativeSettings.addSelectorString(
         settings_path,
-        LocalizationManager:get_translation("settings.settings.carryCapacity.label"),
-        LocalizationManager:get_translation("settings.settings.carryCapacity.description"),
-        min_carry_capacity,
-        max_carry_capacity,
-        carry_capacity_step,
-        active_settings.carryCapacity,
-        default_settings.carryCapacity,
+        LocalizationManager:get_translation("settings.settings.strengthSkillCarryCapacityPassive.label"),
+        LocalizationManager:get_translation("settings.settings.strengthSkillCarryCapacityPassive.description"),
+        strength_skill_carry_capacity_passive_names,
+        active_settings.strengthSkillCarryCapacityPassive,
+        default_settings.strengthSkillCarryCapacityPassive,
         function(value)
-            pending_settings.carryCapacity = value
-        end
-    )
-
-    -- minTitaniumInfusedBonesCarryCapacityBoost int slider
-    settings_menu.minTitaniumInfusedBonesCarryCapacityBoost = NativeSettings.addRangeInt(
-        settings_path,
-        LocalizationManager:get_translation("settings.settings.minTitaniumInfusedBonesCarryCapacityBoost.label"),
-        LocalizationManager:get_translation("settings.settings.minTitaniumInfusedBonesCarryCapacityBoost.description"),
-        titanium_infused_bones_carry_capacity_boost_min_setting,
-        titanium_infused_bones_carry_capacity_boost_max_setting,
-        titanium_infused_bones_carry_capacity_boost_step,
-        active_settings.minTitaniumInfusedBonesCarryCapacityBoost,
-        default_settings.minTitaniumInfusedBonesCarryCapacityBoost,
-        function(value)
-            pending_settings.minTitaniumInfusedBonesCarryCapacityBoost = value
-        end
-    )
-
-    -- maxTitaniumInfusedBonesCarryCapacityBoost int slider
-    settings_menu.maxTitaniumInfusedBonesCarryCapacityBoost = NativeSettings.addRangeInt(
-        settings_path,
-        LocalizationManager:get_translation("settings.settings.maxTitaniumInfusedBonesCarryCapacityBoost.label"),
-        LocalizationManager:get_translation("settings.settings.maxTitaniumInfusedBonesCarryCapacityBoost.description"),
-        titanium_infused_bones_carry_capacity_boost_min_setting,
-        titanium_infused_bones_carry_capacity_boost_max_setting,
-        titanium_infused_bones_carry_capacity_boost_step,
-        active_settings.maxTitaniumInfusedBonesCarryCapacityBoost,
-        default_settings.maxTitaniumInfusedBonesCarryCapacityBoost,
-        function(value)
-            pending_settings.maxTitaniumInfusedBonesCarryCapacityBoost = value
+            pending_settings.strengthSkillCarryCapacityPassive = value
         end
     )
 
@@ -315,16 +304,49 @@ local function create_settings_menu()
         end
     )
 
-    -- strengthSkillCarryCapacityPassive string list
-    settings_menu.strengthSkillCarryCapacityPassive = NativeSettings.addSelectorString(
+    -- minTitaniumInfusedBonesCarryCapacityBoost int slider
+    settings_menu.minTitaniumInfusedBonesCarryCapacityBoost = NativeSettings.addRangeInt(
         settings_path,
-        LocalizationManager:get_translation("settings.settings.strengthSkillCarryCapacityPassive.label"),
-        LocalizationManager:get_translation("settings.settings.strengthSkillCarryCapacityPassive.description"),
-        strength_skill_carry_capacity_passive_names,
-        active_settings.strengthSkillCarryCapacityPassive,
-        default_settings.strengthSkillCarryCapacityPassive,
+        LocalizationManager:get_translation("settings.settings.minTitaniumInfusedBonesCarryCapacityBoost.label"),
+        LocalizationManager:get_translation("settings.settings.minTitaniumInfusedBonesCarryCapacityBoost.description"),
+        titanium_infused_bones_carry_capacity_boost_min_setting,
+        titanium_infused_bones_carry_capacity_boost_max_setting,
+        titanium_infused_bones_carry_capacity_boost_step,
+        active_settings.minTitaniumInfusedBonesCarryCapacityBoost,
+        default_settings.minTitaniumInfusedBonesCarryCapacityBoost,
         function(value)
-            pending_settings.strengthSkillCarryCapacityPassive = value
+            pending_settings.minTitaniumInfusedBonesCarryCapacityBoost = value
+        end
+    )
+
+    -- maxTitaniumInfusedBonesCarryCapacityBoost int slider
+    settings_menu.maxTitaniumInfusedBonesCarryCapacityBoost = NativeSettings.addRangeInt(
+        settings_path,
+        LocalizationManager:get_translation("settings.settings.maxTitaniumInfusedBonesCarryCapacityBoost.label"),
+        LocalizationManager:get_translation("settings.settings.maxTitaniumInfusedBonesCarryCapacityBoost.description"),
+        titanium_infused_bones_carry_capacity_boost_min_setting,
+        titanium_infused_bones_carry_capacity_boost_max_setting,
+        titanium_infused_bones_carry_capacity_boost_step,
+        active_settings.maxTitaniumInfusedBonesCarryCapacityBoost,
+        default_settings.maxTitaniumInfusedBonesCarryCapacityBoost,
+        function(value)
+            pending_settings.maxTitaniumInfusedBonesCarryCapacityBoost = value
+        end
+    )
+
+    -- carryShardBoost float slider
+    settings_menu.carryShardBoost = NativeSettings.addRangeFloat(
+        settings_path,
+        LocalizationManager:get_translation("settings.settings.carryShardBoost.label"),
+        LocalizationManager:get_translation("settings.settings.carryShardBoost.description"),
+        min_carry_shard_boost,
+        max_carry_shard_boost,
+        carry_shard_boost_step,
+        "%.1f",
+        active_settings.carryShardBoost,
+        default_settings.carryShardBoost,
+        function(value)
+            pending_settings.carryShardBoost = value
         end
     )
 end
@@ -335,11 +357,15 @@ end
 ---@param encumbrance_manager table
 ---@param tweak_manager table
 function SettingsManager:initialize(encumbrance_manager, tweak_manager)
+    LogDebug(logtag, "start initialize")
+
     EncumbranceManager = encumbrance_manager
     TweakManager = tweak_manager
     load_presets()
     load_saved_settings()
     create_settings_menu()
+
+    LogDebug(logtag, "end initialize")
 end
 
 return SettingsManager

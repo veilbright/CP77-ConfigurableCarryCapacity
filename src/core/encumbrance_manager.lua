@@ -28,6 +28,8 @@ function EncumbranceManager:apply_settings(settings)
     local should_reset_weight = false
     local player = Game.GetPlayer()
 
+    player.carryShardBoost = settings.carryShardBoost
+
     -- no_equip_weight
     if (player.noEquipWeight ~= settings.noEquipWeight) then
         player.noEquipWeight = settings.noEquipWeight

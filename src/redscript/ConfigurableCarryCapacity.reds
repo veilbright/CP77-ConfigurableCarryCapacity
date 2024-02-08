@@ -4,6 +4,9 @@ let ignoreQuestWeight: Bool = false;
 @addField(PlayerPuppet)
 let noEquipWeight: Bool = false;
 
+@addField(PlayerPuppet)
+let carryShardBoost: Float = 2.0;
+
 // Doesn't count items if they have a quest tag or are equipped
 @replaceMethod(PlayerPuppet)
 private final func CalculateEncumbrance() -> Void {
@@ -19,4 +22,19 @@ private final func CalculateEncumbrance() -> Void {
         };
         i += 1;
     };
+}
+
+// Changes carry capacity added by carry shards by adding another modifier
+@wrapMethod(PlayerPuppet)
+protected cb func OnStatusEffectApplied(evt: ref<ApplyStatusEffectEvent>) -> Bool {
+    wrappedMethod(evt);
+
+    let modifier: Float = this.carryShardBoost - 2.0;
+
+    LogChannel(n"DEBUG", FloatToStringPrec(modifier, 2));
+
+    if modifier != 0.0 && evt.staticData.GameplayTagsContains(n"CarryShard") {
+        let permaMod: ref<gameStatModifierData> = RPGManager.CreateStatModifier(gamedataStatType.CarryCapacity, gameStatModifierType.Additive, modifier);
+        GameInstance.GetStatsSystem(this.GetGame()).AddSavedModifier(Cast<StatsObjectID>(this.GetEntityID()), permaMod);
+    }
 }

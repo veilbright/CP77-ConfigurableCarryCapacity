@@ -18,7 +18,7 @@ end
 
 function VendorDataManagerObserver:initialize()
     -- Call before_transfer_item when the player/vendor transfers an item
-    ObserveBefore('VendorDataManager', 'TransferItem', observe_before_TransferItem)
+    ObserveBefore("VendorDataManager", "TransferItem", observe_before_TransferItem)
 
     -- Call before_sell_item before the player sells an item to a vendor
     ObserveBefore("VendorDataManager", "SellItemToVendor", observe_before_SellItemToVendor)
