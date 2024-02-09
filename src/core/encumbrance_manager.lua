@@ -1,6 +1,6 @@
 EncumbranceManager = {}
 
-local logtag = "encumbrance_manager"
+local logtag = "EncumbranceManager"
 
 
 -- LOCAL FUNCTIONS --
@@ -29,6 +29,35 @@ function EncumbranceManager:apply_settings(settings)
     local player = Game.GetPlayer()
 
     player.carryShardBoost = settings.carryShardBoost
+
+    -- no_equip_weight
+    if (player.noEquipWeight ~= settings.noEquipWeight) then
+        player.noEquipWeight = settings.noEquipWeight
+
+        should_reset_weight = true
+    end
+
+    -- ignore_quest_weight
+    if (player.ignoreQuestWeight ~= settings.ignoreQuestWeight) then
+        player.ignoreQuestWeight = settings.ignoreQuestWeight
+
+        should_reset_weight = true
+    end
+
+    if should_reset_weight then
+        player:CalculateEncumbrance()
+    end
+end
+
+---@param settings table
+---@param player PlayerPuppet
+-- Updates settings variables and resets anything needed
+function EncumbranceManager:apply_player_settings(settings, player)
+    local should_reset_weight = false
+
+    player.carryShardBoost = settings.carryShardBoost
+
+    print(player.noEquipWeight ~= settings.noEquipWeight)
 
     -- no_equip_weight
     if (player.noEquipWeight ~= settings.noEquipWeight) then

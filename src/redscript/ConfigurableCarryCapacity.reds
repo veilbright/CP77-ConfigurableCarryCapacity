@@ -15,6 +15,9 @@ private final func CalculateEncumbrance() -> Void {
     let TS: ref<TransactionSystem> = GameInstance.GetTransactionSystem(this.GetGame());
     TS.GetItemList(this, items);
     i = 0;
+
+    LogChannel(n"DEBUG", "Called now");
+
     this.m_curInventoryWeight = 0;
     while i < ArraySize(items) {
         if !ItemID.HasFlag(items[i].GetID(), gameEItemIDFlag.Preview) && (!this.ignoreQuestWeight || !items[i].HasTag(n"Quest")) && (!this.noEquipWeight || !RPGManager.IsItemEquipped(this, items[i].GetID())) {
@@ -29,10 +32,12 @@ private final func CalculateEncumbrance() -> Void {
 protected cb func OnStatusEffectApplied(evt: ref<ApplyStatusEffectEvent>) -> Bool {
     wrappedMethod(evt);
 
-    let modifier: Float = this.carryShardBoost - 2.0;
-
-    if modifier != 0.0 && evt.staticData.GameplayTagsContains(n"CarryShard") {
-        let permaMod: ref<gameStatModifierData> = RPGManager.CreateStatModifier(gamedataStatType.CarryCapacity, gameStatModifierType.Additive, modifier);
-        GameInstance.GetStatsSystem(this.GetGame()).AddSavedModifier(Cast<StatsObjectID>(this.GetEntityID()), permaMod);
+    if evt.staticData.GameplayTagsContains(n"CarryShard") {
+        let modifier: Float = this.carryShardBoost - 2.0;
+        
+        if modifier != 0.0 {
+            let permaMod: ref<gameStatModifierData> = RPGManager.CreateStatModifier(gamedataStatType.CarryCapacity, gameStatModifierType.Additive, modifier);
+            GameInstance.GetStatsSystem(this.GetGame()).AddSavedModifier(Cast<StatsObjectID>(this.GetEntityID()), permaMod);
+        }    
     }
 }

@@ -1,6 +1,6 @@
 local SettingsManager = {}
 
-local logtag = "settings_manager"
+local logtag = "SettingsManager"
 
 local saved_settings_path = "./data/saved_settings.json"
 local presets_path = "./data/presets.json"
@@ -366,6 +366,16 @@ end
 
 
 -- SETTINGSMANAGER FUNCTIONS --
+
+-- applies settings that might be otherwise missed that apply directly to the player
+function SettingsManager:apply_player_settings()
+    EncumbranceManager:apply_settings(pending_settings)
+
+    for name, value in pairs(pending_settings) do
+        active_settings[name] = value
+    end
+    save_settings()
+end
 
 ---@param encumbrance_manager table
 ---@param tweak_manager table

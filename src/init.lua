@@ -3,7 +3,7 @@ local ConfigurableCarryCapacity = {}
 ModName = "Configurable Carry Capacity"
 
 DEBUG = true
-local logtag = "init"
+local logtag = "Init"
 
 -- Global Managers
 LocalizationManager = require("./core/localization_manager")
@@ -15,11 +15,13 @@ local TweakManager = require("./core/tweak_manager")
 
 
 -- Observers
+local EquipmentSystemPlayerDataObserver = require("./observers/EquipmentSystemPlayerData")
 local InventoryDataManagerV2Observer = require("./observers/InventoryDataManagerV2")
 local VendorDataManagerObserver = require("./observers/VendorDataManager")
 
 -- Initialize Observers
 local function initialize_observers()
+    EquipmentSystemPlayerDataObserver:initialize(SettingsManager)
     InventoryDataManagerV2Observer:initialize()
     VendorDataManagerObserver:initialize()
 end

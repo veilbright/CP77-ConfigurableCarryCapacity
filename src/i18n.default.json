@@ -23,7 +23,7 @@
     "settings.settings.carryShardBoost.label": "Carry Shard Capacity Boost",
     "settings.settings.ignoreQuestWeight.description": "Enable to ignore the weight added from items that can't be dropped. Disable for vanilla settings.",
     "settings.settings.ignoreQuestWeight.label": "Ignore Weight from Quest Items",
-    "settings.settings.infiniteCarryCapacity.description": "Enable to have unlimited Carry Capacity.",
+    "settings.settings.infiniteCarryCapacity.description": "**REQUIRES RELOAD**\nEnable to have unlimited Carry Capacity.",
     "settings.settings.infiniteCarryCapacity.label": "Enable Unlimited Carry Capacity",
     "settings.settings.name": "Settings",
     "settings.settings.noEquipWeight.description": "Enable to not count equipped weapons and clothes towards weight held. Disable for vanilla settings.",
@@ -39,5 +39,4 @@
     "settings.settings.minTitaniumInfusedBonesCarryCapacityBoost.description": "Percentage boost to Carry Capacity from Tier 1 Titanium Bones\n\nWill evenly disperse boost from Tiers 2, 3, 4 between Tiers 1 and 5",
     "settings.settings.maxTitaniumInfusedBonesCarryCapacityBoost.label": "Tier 5 Titanium Bones Carry Capacity Boost",
     "settings.settings.maxTitaniumInfusedBonesCarryCapacityBoost.description": "Percentage boost to Carry Capacity from Tier 5 Titanium Bones\n\nWill evenly disperse boost from Tiers 2, 3, 4 between Tiers 1 and 5"
-
 }

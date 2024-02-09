@@ -1,13 +1,14 @@
 TweakManager = {}
 
-local blackmarket_carry_capacity_booster = nil;
-local carry_capacity = nil
-local carry_capacity_booster = nil
-local carry_capacity_cyberware_modifiers = nil
-local infinite_carry_capacity = nil
-local strength_skill_carry_capacity_passive_id = nil
-local min_titanium_infused_bones_carry_capacity_boost = nil
-local max_titanium_infused_bones_carry_capacity_boost = nil
+local blackmarket_carry_capacity_booster = 100;
+local carry_capacity = 200
+local carry_capacity_booster = 50
+local carry_capacity_cyberware_modifiers = true
+local infinite_carry_capacity = false
+local strength_skill_carry_capacity_passive_id = 1
+local min_titanium_infused_bones_carry_capacity_boost = 30
+local max_titanium_infused_bones_carry_capacity_boost = 66
+
 
 local strength_skill_carry_capacity_passive_ids = {
     [1] = "configurable_carry_capacity_strength_skill_passives_low",
@@ -123,6 +124,7 @@ local function set_titanium_infused_bones_carry_capacity_boost()
     TweakDB:SetFlat("Items.AdvancedTitaniumInfusedBonesLegendary2_inline1.value", max)
     TweakDB:SetFlat("Items.AdvancedTitaniumInfusedBonesLegendary2_inline2.intValues", {max * 100})
 end
+
 
 -- TWEAKMANAGER FUNCTIONS --
 
