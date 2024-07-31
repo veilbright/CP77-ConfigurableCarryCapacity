@@ -10,13 +10,11 @@ local logtag = "EquipmentSystemPlayerDataObserver"
 -- make sure player settings are correct
 -- needs to be after the player has an equipment system so items can be equipped
 local function observe_after_OnAttach()
-    print(Game.GetPlayer().noEquipWeight)
     if SettingsManager ~= nil then
         SettingsManager:apply_player_settings()
     else
         LogError(logtag, "SettingsManager not passed correctly. PlayerPuppet settings not configured.")
     end
-    print(Game.GetPlayer().noEquipWeight)
 end
 
 

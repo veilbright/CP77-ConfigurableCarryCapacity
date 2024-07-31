@@ -16,8 +16,6 @@ private final func CalculateEncumbrance() -> Void {
     TS.GetItemList(this, items);
     i = 0;
 
-    LogChannel(n"DEBUG", "Called now");
-
     this.m_curInventoryWeight = 0;
     while i < ArraySize(items) {
         if !ItemID.HasFlag(items[i].GetID(), gameEItemIDFlag.Preview) && (!this.ignoreQuestWeight || !items[i].HasTag(n"Quest")) && (!this.noEquipWeight || !RPGManager.IsItemEquipped(this, items[i].GetID())) {

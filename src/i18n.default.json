@@ -8,7 +8,7 @@
     "settings.presets.medium.name": "Medium Capacity",
     "settings.presets.name": "Presets",
     "settings.presets.realistic.name": "Realistic Capacity",
-    "settings.presets.select.description": "Choose which preset to apply\n\nLow Capacity Is recommended if you want inventory management to be important for gameplay.\n\nMedium Capacity is recommended for an experience close to Vanilla with some new features from the mod.\n\nHigh Capacity is recommended if you thought the vanilla carry capacity was too low.\n\nRealistic Capacity is recommended if you prioritize immersion over fun.",
+    "settings.presets.select.description": "Choose which preset to apply\n\nLow Capacity Is recommended if you want inventory management to be important for gameplay.\n\nMedium Capacity is recommended for an experience close to Vanilla with some new features from the mod.\n\nHigh Capacity is recommended if you thought the vanilla carry capacity was too low.\n\nRealistic Capacity is recommended if you prioritize immersion over fun.\n\nVanilla will return the game to a completely vanilla carry capacity experience.",
     "settings.presets.select.label": "Select Preset",
     "settings.presets.vanilla.name": "Vanilla",
     "settings.settings.blackmarketCarryCapacityBooster.description": "**REQUIRES RELOAD**\nChanges the Carrying Capacity added by using Ol' Donkey\n\n+___",

@@ -1,3 +1,4 @@
 - [] search modifiers.carrycapacity in tweaks to see if any new ones are added to cyberware
 - [] rebuild archive files with WolvenKit
 - [] check if "base\gameplay\curves\statcurves\statscurvesset.curveresset" has any changes
+- [] required mods: CET, redscript, native settings

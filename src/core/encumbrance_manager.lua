@@ -57,8 +57,6 @@ function EncumbranceManager:apply_player_settings(settings, player)
 
     player.carryShardBoost = settings.carryShardBoost
 
-    print(player.noEquipWeight ~= settings.noEquipWeight)
-
     -- no_equip_weight
     if (player.noEquipWeight ~= settings.noEquipWeight) then
         player.noEquipWeight = settings.noEquipWeight
