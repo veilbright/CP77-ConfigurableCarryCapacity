@@ -6,8 +6,8 @@ local carry_capacity_booster = 50
 local carry_capacity_cyberware_modifiers = true
 local infinite_carry_capacity = false
 local strength_skill_carry_capacity_passive_id = 1
-local min_titanium_infused_bones_carry_capacity_boost = 30
 local max_titanium_infused_bones_carry_capacity_boost = 66
+local min_titanium_infused_bones_carry_capacity_boost = 30
 
 
 local strength_skill_carry_capacity_passive_ids = {

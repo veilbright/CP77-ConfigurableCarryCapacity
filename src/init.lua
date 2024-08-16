@@ -96,8 +96,12 @@ function WriteJSONFile(filepath, contents_table)
     end
 
     local file = io.open(filepath, "w+")
-    file:write(contents)
-    file:close()
+    if file ~= nil then
+        file:write(contents)
+        file:close()
+    else
+        LogError(logtag, file.." == nil")
+    end
 end
 
 ---@param tag string
